@@ -115,7 +115,7 @@ public:
         //std::cout<<size<<std::endl;
         for (int i = 0; i < cnt; ++i)
         {
-            // 控制选择的参数
+         // Control selected parameters
 
             bool token = false;
             if (needNot)
@@ -176,7 +176,7 @@ public:
             ARMAMath ar_math;
             double aic = ar_math.getModelAIC(coe, data, type);
             //std::cout<<aic<<std::endl;
-            // 在求解过程中如果阶数选取过长，可能会出现NAN或者无穷大的情况
+            // If the order is too long during the solution process, NAN or infinity may occur
 
             if (aic<=1.7976931348623157E308 && !std::isnan(aic) && aic < minAIC)
             {
@@ -255,7 +255,7 @@ public:
                 {
                     tmpMA += maCoe[i] * errData[i];
                 }
-                //产生各个时刻的噪声
+               // generate noise at different times
                 for(int j = q; j > 0; --j)
                 {
                     errData[j] = errData[j - 1];
@@ -263,7 +263,7 @@ public:
                 errData[0] = gaussrand()*std::sqrt(maCoe[0]);
             }
 
-            predict = (int)(tmpMA); //产生预测
+            predict = (int)(tmpMA); // Generate predictions
         }
         else if (q == 0)
         {
@@ -297,7 +297,7 @@ public:
                     tmpMA += maCoe[i] * errData[i];
                 }
 
-                //产生各个时刻的噪声
+               // Generate noise at various moments
                 for(int j = q; j > 0; --j)
                 {
                     errData[j] = errData[j-1];

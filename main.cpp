@@ -46,7 +46,7 @@ int main(){
     std::vector<std::vector<int>> list;
     std::vector<int> tmpPredict(modelCnt);
 
-    for (int k = 0; k < modelCnt; ++k)			//控制通过多少组参数进行计算最终的结果
+    for (int k = 0; k < modelCnt; ++k)			// Control how many parameters are used to calculate the final result
     {
         std::vector<int> bestModel = arima->getARIMAModel(period, list, (k == 0) ? false : true);
         std::cout<<bestModel.size()<<std::endl;
