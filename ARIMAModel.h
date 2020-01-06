@@ -4,6 +4,9 @@
 
 #ifndef ARIMAMODEL_H
 #define ARIMAMODEL_H
+#include <iostream>
+#include <cmath>
+#include <cfloat>
 #include <vector>
 #include "ARModel.h"
 #include "MAModel.h"
@@ -37,8 +40,10 @@ public:
         }
         return res;
     }
-    std::vector<double> preDealDiff(int period){
-        if(period>=dataArray.size()-1){
+    std::vector<double> preDealDiff(int period)
+    {
+        if(period >= dataArray.size()-1)
+        {
             period=0;
         }
 
@@ -62,16 +67,25 @@ public:
 
     std::vector<int> getARIMAModel(int period,std::vector<std::vector<int>> notModel,bool needNot){
 
-        std::vector<double> data = this->preDealDiff(period);
-        //for(int i=0;i<data.size();i++) std::cout<<data[i]<<std::endl;
+        //show data before
+        for(int i=0;i<dataArray.size();i++) std::cout<<dataArray[i]<<std::endl;
 
-        double minAIC = 1.7976931348623157E308D;
+        std::vector<double> data = this->preDealDiff(period);
+        //show data after
+        for(int i=0;i<data.size();i++)
+        {
+            double temp=data[i];
+            double tt= temp+1;
+            std::cout<<temp<<std::endl;
+        } 
+
+        double minAIC = 1.7976931348623157E308;
         std::vector<int> bestModel(3);
         int type = 0;
         std::vector<std::vector<double>> coe;
 
 
-        // model产生, 即产生相应的p, q参数
+        // The model is generated, that is, the corresponding p, q parameters are generated
         int len = data.size();
 
         if (len > 5)
@@ -122,7 +136,8 @@ public:
 
             if (model[i][0] == 0)
             {
-                MAMoel* ma = new MAMoel(data,model[i][1]);
+                int mmVal=model[i][1];
+                MAMoel* ma = new MAMoel(data, mmVal);
 
                 //std::vector<std::vector<double>>
                 coe=ma->solveCoeOfMA();
@@ -133,7 +148,8 @@ public:
             }
             else if (model[i][1] == 0)
             {
-                ARModel* ar = new ARModel(data, model[i][0]);
+                int aaVal = model[i][0];
+                ARModel* ar = new ARModel(data, aaVal);
                 //std::vector<std::vector<double>> tmp(
                 coe=ar->solveCoeOfAR();
              //   std::cout<<i<<coe.size()<<std::endl;
@@ -143,14 +159,18 @@ public:
             }
             else
             {
+                int p=model[i][0];
+                int q = model[i][1];
                 //std::cout<<i<<model[i][0]<<" "<<model[i][1]<<std::endl;
-                ARMAModel* arma = new ARMAModel(data, model[i][0], model[i][1]);;
+                ARMAModel* arma = new ARMAModel(data, p, q);
 
                 //std::vector<std::vector<double>> tmp(
                 coe=arma->solveCoeOfARMA();
-              //  std::cout<<i<<coe.size()<<std::endl;
-                //for(int ks=0;ks<arma->solveCoeOfARMA().size();ks++) tmp.push_back(arma->solveCoeOfARMA()[ks]);
-                //coe.assign(tmp.begin(),tmp.end());
+                for(int i=0; i< coe.size(); i++)
+                {
+                    double dd = coe[i][0];
+                    double s= dd+1;
+                }
                 type = 3;
             }
             ARMAMath ar_math;
@@ -158,7 +178,7 @@ public:
             //std::cout<<aic<<std::endl;
             // 在求解过程中如果阶数选取过长，可能会出现NAN或者无穷大的情况
 
-            if (aic<=1.7976931348623157E308D && !std::isnan(aic) && aic < minAIC)
+            if (aic<=1.7976931348623157E308 && !std::isnan(aic) && aic < minAIC)
             {
                 minAIC = aic;
                // std::cout<<aic<<std::endl;
@@ -168,6 +188,9 @@ public:
                 this->arima = coe;
             }
         }
+        int p=bestModel[0];
+        int q= bestModel[1];
+        int i=bestModel[2];
         return bestModel;
     }
 

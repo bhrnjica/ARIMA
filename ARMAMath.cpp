@@ -5,6 +5,7 @@
 #include <cstring>
 #include <cmath>
 #include <cstdlib>
+#include <algorithm>
 #include "ARMAMath.h"
 
 double ARMAMath::avgData(std::vector<double> dataArray) {
@@ -244,7 +245,7 @@ std::vector<double> ARMAMath::computeMACoe(std::vector<double> dataArray, int q)
 
     int p = (int)std::log(dataArray.size());
 
-//		System.out.println("The best p is " + p);
+	//std::cout<<"The best p is "<< p << std::endl;
     // 求取系数
     std::vector<double> bestGarma(this->autocovData(dataArray,p));
     std::vector<std::vector<double>> bestResult(this->LevinsonSolve(bestGarma));

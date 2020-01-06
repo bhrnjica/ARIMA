@@ -14,9 +14,28 @@ int main(){
     std::vector<double> dataArray;
     while(std::cin>>gets){
         dataArray.push_back(gets);
-        std::cout<<gets<<std::endl;
+        //std::cout<<gets<<std::endl;
     }
+/*
+    ARMAMath * arMath = new ARMAMath();
+    int q=2;
+    std::vector<double> coef = arMath->computeMACoe(dataArray, q);
+    std::cout<<coef.size()<<std::endl;
 
+    // ...
+    for (int i=0; i < coef.size(); i++)
+        std::cout << coef.at(i) <<std::endl;
+
+    int p=2;
+    std::vector<double> coef1 = arMath->computeARCoe(dataArray, p);
+    std::cout<<coef1.size()<<std::endl;
+    // ...
+    for (int i=0; i < coef1.size(); i++)
+        std::cout << coef1.at(i) <<std::endl;
+
+*/
+
+    std::cout<<RAND_MAX<< std::endl;
     ARIMAModel* arima = new ARIMAModel(dataArray);
 
 
@@ -30,7 +49,7 @@ int main(){
     for (int k = 0; k < modelCnt; ++k)			//控制通过多少组参数进行计算最终的结果
     {
         std::vector<int> bestModel = arima->getARIMAModel(period, list, (k == 0) ? false : true);
-        //std::cout<<bestModel.size()<<std::endl;
+        std::cout<<bestModel.size()<<std::endl;
 
         if (bestModel.size() == 0)
         {
@@ -40,9 +59,9 @@ int main(){
         }
         else
         {
-            //std::cout<<bestModel[0]<<bestModel[1]<<std::endl;
+            std::cout<<bestModel[0]<<bestModel[1]<<std::endl;
             int predictDiff = arima->predictValue(bestModel[0], bestModel[1], period);
-            //std::cout<<"fuck"<<std::endl;
+            std::cout<<"fuck"<<std::endl;
             tmpPredict[k] = arima->aftDeal(predictDiff, period);
             cnt++;
         }
